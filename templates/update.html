@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Update Friend{% endblock %}
+{% block content %}
+    <div class="container">
+      <h1>Update Friend...</h1>
+      <br/>
+      <form action="/update/{{friend_to_update.id}}" method="POST">
+          <input type=text" placeholder="Name" name="name" value="{{friend_to_update.name}}">
+          <input type=text" placeholder="Last name" name="last_name" value="{{friend_to_update.last_name}}">
+          <input type=text" placeholder="Company" name="company" value="{{friend_to_update.company}}">
+          <input type=text" placeholder="Phone number" name="phone_number" value="{{friend_to_update.phone_number}}">
+          <input type=text" placeholder="Email" name="email" value="{{friend_to_update.email}}">
+
+          <!-- Bootstrap button -->
+          <button type="submit" value="Update" class="btn btn-secondary">Update</button>
+      </form>
+
+    </div>
+{% endblock %}
