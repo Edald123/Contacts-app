@@ -51,14 +51,17 @@ class Friends(db.Model):
 
     @validates("phone_number")
     def validate_phone_number(self, key, phone_number):
-        friend = self.query.filter_by(phone_number=phone_number).first()
+        if phone_number:
 
-        if friend:
-            if friend.id != self.id:
-                raise ValueError("phone number must be unique")
-        if re.match(self.phone_number_regex, phone_number):
-            return phone_number
-        raise ValueError("phone number must be valid")
+            friend = self.query.filter_by(phone_number=phone_number).first()
+
+            if friend:
+                if friend.id != self.id:
+                    raise ValueError("phone number must be unique")
+            if re.match(self.phone_number_regex, phone_number):
+                return phone_number
+            raise ValueError("phone number must be valid")
+        return ""
 
     # Create a function to return a string when we add
     def __repr__(self):
