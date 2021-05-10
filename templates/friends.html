@@ -1,39 +1,80 @@
 {% extends 'base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <div class="container">
-      <h1>Friends...</h1>
-      <br/>
-      <form action="/friends" method="POST">
-          <input type=text" placeholder="Name" name="name" value="{{friend.name}}">
-          <input type=text" placeholder="Last name" name="last_name" value="{{friend.last_name}}">
-          <input type=text" placeholder="Company" name="company" value="{{friend.company}}">
-          <input type=text" placeholder="Phone number" name="phone_number" value="{{friend.phone_number}}">
-          <input type=text" placeholder="Email" name="email" value="{{friend.email}}">
-          <!-- Bootstrap button -->
-          <input type="submit" value="Add Name" class="btn btn-secondary">
-      </form>
-      <p>{{ error }}</p>
-      <br/><br/>
+<div class="container">
+    <h1>CONTACTS</h1>
+    <hr>
+    <form action="/friends" method="POST">
+
+        {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+
+        <p><b><i>Elements with * are required</i></b></p>
+        <input type=text" placeholder="Name *" name="name" value="{{friend.name}}">
+        <input type=text" placeholder="Last name *" name="last_name" value="{{friend.last_name}}">
+        <input type=text" placeholder="Company" name="company" value="{{friend.company}}">
+        <input type=text" placeholder="Phone number" name="phone_number" value="{{friend.phone_number}}">
+        <input type=text" placeholder="Email *" name="email" value="{{friend.email}}">
+        <!-- Bootstrap button -->
+        <input type="submit" value="Add Name" class="btn btn-primary">
+
+    </form>
+
+    <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Click for information
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Requirements</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul>
+                            <li><p>Name: Only letters</p></li>
+                            <li><p>Last name: Only letters</p></li>
+                            <li><p>Company: Alphanumeric</p></li>
+                            <li><p>Phone number: Numeric, unique</p></li>
+                            <li><p>Email: Alphanumeric, unique</p></li>
+                        </ul>
+                        <p><b>All fields are required except for "phone number" and "company".</b></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <br/><br/>
 
 
-        <div class="table-responsive">
-    <table class="table table-sm table-borderless mb-0">
-        <thead class="thead-dark">
+    <div class="table-responsive">
+        <!--<table class="table table-sm table-borderless mb-0">-->
+        <table class="table table-striped">
+            <thead class="table-dark">
             <tr>
-                <th>S/N</th>
+                <!-- <th>S/N</th> -->
                 <th>Friend Name</th>
                 <th>Last Name</th>
-                <th>Empresa</th>
-                <th>phone_number</th>
-                <th>email</th>
+                <th>Company</th>
+                <th>Phone number</th>
+                <th>Email</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for friend in friends.items %}
             <tr>
-                <th scope="row">{{ friend.id }}</th>
+                <!-- <th scope="row">{{ friend.id }}</th> -->
                 <td>{{ friend.name }}</td>
                 <td>{{ friend.last_name }}</td>
                 <td>{{ friend.company }}</td>
@@ -46,48 +87,47 @@
 
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-
-        <!-- Pagination Links-->
-<div class="text-right">
-    <a href="{{ url_for('friends', page=friends.prev_num) }}"
-       class="btn btn-outline-dark
-       {% if friends.page == 1 %}disabled{% endif %}">
-        &laquo;
-    </a>
-<!-- Loop through the number of pages to display a link for each-->
-    {% for page_num in friends.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-{% if page_num %}
-<!-- Check for the active page and set the link to "Active"-->
-            {% if friends.page == page_num %}
-            <a href="{{ url_for('friends', page=page_num) }}"
-               class="btn btn-dark">
-                {{ page_num }}
-            </a>
-            {% else %}
-            <a href="{{ url_for('friends', page=page_num) }}"
-               class="btn btn-outline-dark">
-                {{ page_num }}
-            </a>
-            {% endif %}
-        {% else %}
-            ...
-        {% endif %}
-    {% endfor %}
-    <a href="{{ url_for('friends', page=friends.next_num) }}"
-       class="btn btn-outline-dark
-       {% if friends.page == friends.pages %}disabled{% endif %}">
-        &raquo;
-    </a>
-</div>
-<p class="text-right mt-3">
-   Showing page {{ friends.page }} of {{ friends.pages }}
-</p>
-
-
-
+            </tbody>
+        </table>
     </div>
+
+
+    <!-- Pagination Links-->
+    <div class="text-right">
+        <a href="{{ url_for('friends', page=friends.prev_num) }}"
+           class="btn btn-outline-dark
+       {% if friends.page == 1 %}disabled{% endif %}">
+            &laquo;
+        </a>
+        <!-- Loop through the number of pages to display a link for each-->
+        {% for page_num in friends.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+        <!-- Check for the active page and set the link to "Active"-->
+        {% if friends.page == page_num %}
+        <a href="{{ url_for('friends', page=page_num) }}"
+           class="btn btn-dark">
+            {{ page_num }}
+        </a>
+        {% else %}
+        <a href="{{ url_for('friends', page=page_num) }}"
+           class="btn btn-outline-dark">
+            {{ page_num }}
+        </a>
+        {% endif %}
+        {% else %}
+        ...
+        {% endif %}
+        {% endfor %}
+        <a href="{{ url_for('friends', page=friends.next_num) }}"
+           class="btn btn-outline-dark
+       {% if friends.page == friends.pages %}disabled{% endif %}">
+            &raquo;
+        </a>
+    </div>
+    <p class="text-right mt-3">
+        Showing page {{ friends.page }} of {{ friends.pages }}
+    </p>
+
+
+</div>
 {% endblock %}
