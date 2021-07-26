@@ -1,6 +1,6 @@
 # Contacts-app
 
-Contacts-app is a  app  that allows create, update and delete contacts. You can also list contacts through pagination in 10 by 10 contacts. 
+Contacts-app is an app that allows create, update and delete contacts. You can also list contacts through pagination in 10 by 10 contacts. 
 
 Contacts app is a web application developed with the use of the Flask framework for web development with python. For the Front End, the following tools were used: Bootstrap for CSS and HTML, Jinga with Flask to use elements created in the Back End and HTML and other references to build the app using the Templates folder for flask.
 ## Prerequisites
